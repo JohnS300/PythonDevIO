@@ -12,8 +12,13 @@ def greet(name: str) -> str:
     Returns:
         str: Greeting message
     """
-
-    return f"Hello {name}! Welcome to Python Mastery"
+    clean_name = name.strip()
+    if not clean_name:
+        # “if not” is used to test the opposite of a condition.
+        # The code inside the block will be executed if the condition is False
+        raise ValueError
+    clean_name = clean_name.title()  # Capitalize first letter of each word
+    return f"Hello {clean_name}! Welcome to Python Mastery"
 
 
 def main() -> None:
