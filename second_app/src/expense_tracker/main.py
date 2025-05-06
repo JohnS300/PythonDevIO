@@ -32,12 +32,12 @@ _expenses: List[Expense] = []
 # Variable names beginning with _ are not imported
 
 
-
 def add_expense(amount: float, category: Category, description: str) -> None:
     """
     Create a new Expense and add it to the in-memory List
     """
     _expenses.append(Expense(amount, category, description))
+
 
 def list_expenses() -> List[Expense]:
     """
