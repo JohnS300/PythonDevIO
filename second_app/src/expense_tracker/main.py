@@ -14,8 +14,12 @@ class Expense:
 
 
 class Category(Enum):
-    # Enum gives you Category.FOOD, Category.TRANSPORT, etc.,
-    # instead of free-form strings—so you can’t mistype "Food" vs "food"
+    """
+    - Enum lets you define a set of named, constant values.
+      Great for categories that shouldn’t change.
+    - Enum gives you Category.FOOD, Category.TRANSPORT, etc.,
+      instead of free-form strings—so you can’t mistype "Food" vs "food"
+    """
     FOOD = "food"
     TRANSPORT = "transport"
     UTILITIES = "utilities"
