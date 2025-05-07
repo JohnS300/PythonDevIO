@@ -22,7 +22,7 @@ def test_add_and_list_single():
 
 
 def test_invalid_category_raises():
-    with pytest.raises(ValueError)():
+    with pytest.raises(ValueError):
         """
         Check that ValueError is thrown when someone passes a bad
           category string

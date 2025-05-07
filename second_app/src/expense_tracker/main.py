@@ -38,8 +38,11 @@ _expenses: List[Expense] = []
 
 def add_expense(amount: float, category: Category, description: str) -> None:
     """
-    Create a new Expense and add it to the in-memory List
+    Create a new Expense and add it to the in-memory list.
+    Raises ValueError if category is not a Category.
     """
+    if not isinstance(category, Category):
+        raise ValueError(f"Invalid category: {category!r}")
     _expenses.append(Expense(amount, category, description))
 
 
