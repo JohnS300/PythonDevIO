@@ -4,6 +4,7 @@ from datetime import date
 
 
 _expenses = []
+# module-level list to hold all Expense objects
 
 
 class Category(Enum):
@@ -32,3 +33,4 @@ def add_expenses(amount, date_of_expense, category, description):
 
 def list_expenses():
     return list(_expenses)
+    # return a shallow copy of the list so caller can’t mutate it
