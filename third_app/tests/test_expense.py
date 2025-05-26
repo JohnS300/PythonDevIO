@@ -1,6 +1,6 @@
 import pytest
 
-from src.expense_tracker_v2.main import add_expenses, Category, _expenses
+from expense_tracker_v2.main import add_expenses, Category, _expenses
 from datetime import date
 
 
@@ -24,9 +24,19 @@ def test_invalid_category_raises():
     add_expenses(10, date(2024, 4, 24), Category.Souvlaki, 'Souvlaki apo lemona')
 
 
-@pytest.mark.parametrize("bad_amount", [0, -5, five, None], ids=["zero", "negative", "non-numeric string", "None"])
-def test_invalid_amount_raises():
+@pytest.mark.parametrize("bad_amount", [0, -5, 'five', None], ids=["zero", "negative", "non-numeric string", "None"])
+def test_invalid_amount_raises(bad_amount):
     with pytest.raises(ValueError):
         add_expenses(bad_amount, date.today(), Category.ENTERTAINMENT, 'Cinema tickets')
 
 
+@pytest.mark.parametrize("bad_date", ["2025-05-12", 1234, None], ids=["string date", "int", "None"])
+def test_invalid_date_raises(bad_date):
+    with pytest.raises(TypeError):
+        add_expenses(20, bad_date, Category.HOBBY, "Testing dates")
+
+
+@pytest.mark.parametrize("bad_description", ['', '  ', None], ids=['empty', 'spaces', 'None'])
+def test_invalid_description_raises(bad_description):
+    with pytest.raises(ValueError):
+        add_expenses(200.00, date(2022, 5, 5), Category.RENT, bad_description)
