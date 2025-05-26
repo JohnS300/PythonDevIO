@@ -35,7 +35,7 @@ def add_expenses(amount, date_of_expense, category, description):
         raise TypeError(f"category must be Category, got {type(category).__name__}")
     if not isinstance(description, str) or not description.strip():
         raise ValueError("description must be a non-empty string")
-    expense = Expense(amount, date_of_expense, category, description)
+    expense = Expense(amount, date_of_expense, category, description.strip())
     _expenses.append(expense)
 
 
