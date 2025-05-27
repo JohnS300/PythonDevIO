@@ -27,7 +27,7 @@ class Expense:
 
 
 def add_expenses(amount, date_of_expense, category, description):
-    if not isinstance((amount), (int, float)) or (amount < 0):
+    if not isinstance((amount), (int, float)) or (amount <= 0):
         raise ValueError(f"Amount must be positive number, got {amount!r}")
     if not (isinstance(date_of_expense, date)):
         raise TypeError(f"date_of_expense must be datetime.date, got {type(date_of_expense).__name__}")
@@ -42,3 +42,28 @@ def add_expenses(amount, date_of_expense, category, description):
 def list_expenses():
     return list(_expenses)
     # return a shallow copy of the list so caller can’t mutate it
+
+
+def total_expenses():
+    sum = 0.0
+    for i in _expenses:
+        sum = sum + i.amount
+    return sum
+
+
+def filter_by_category(category):
+    if not isinstance(category, Category):
+        raise TypeError(f"category must be Category, got {type(category).__name__}")
+    _filtered_expenses = []
+    for i in _expenses:
+        if i.category == category:
+            _filtered_expenses.append(i)
+    return _filtered_expenses
+
+
+def remove_expense(index):
+    _expenses.pop(index)
+
+
+def clear_expenses():
+    _expenses.clear()

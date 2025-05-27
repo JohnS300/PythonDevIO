@@ -21,7 +21,8 @@ def test_add_valid_expense():
 
 
 def test_invalid_category_raises():
-    add_expenses(10, date(2024, 4, 24), Category.Souvlaki, 'Souvlaki apo lemona')
+    with pytest.raises(TypeError):
+        add_expenses(10, date(2024, 4, 24), "Souvlaki", 'Souvlaki apo lemona')
 
 
 @pytest.mark.parametrize("bad_amount", [0, -5, 'five', None], ids=["zero", "negative", "non-numeric string", "None"])
