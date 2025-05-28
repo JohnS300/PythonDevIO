@@ -6,7 +6,7 @@ from datetime import date
 
 # Pytest will look for a function named setup_function and run it before every test in that module.
 def setup_function():
-    _expenses.clear
+    _expenses.clear()
 
 
 # The function name starts with test_ so pytest discovers it.
