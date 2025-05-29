@@ -15,3 +15,6 @@ def test_invalid_total_expenses_call():
 def test_filter_by_category(bad_category_filter):
     with pytest.raises(TypeError):
         filter_by_category(bad_category_filter)
+
+
+def test_invalid_total_expenses_call():
