@@ -46,11 +46,8 @@ def list_expenses():
 
 def total_expenses():
     sum = 0.0
-    if _expenses:
-        for i in _expenses:
-            sum = sum + i.amount
-    else:
-        print("No expenses registered yet.")
+    for i in _expenses:
+        sum = sum + i.amount
     return sum
 
 
