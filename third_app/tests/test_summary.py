@@ -3,8 +3,11 @@ from datetime import date
 from expense_tracker_v2.main import total_expenses, filter_by_category, remove_expense, clear_expenses, _expenses, add_expenses, Category
 
 
+@pytest.fixture(autouse=True)
 def setup_function():
-    _expenses.clear()
+    clear_expenses() # or _expenses.clear()
+    yield
+    clear_expenses() # or _expenses.clear()
 
 
 def test_get_valid_total_expenses():
