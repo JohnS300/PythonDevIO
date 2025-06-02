@@ -5,9 +5,9 @@ from expense_tracker_v2.main import total_expenses, filter_by_category, remove_e
 
 @pytest.fixture(autouse=True)
 def setup_function():
-    clear_expenses() # or _expenses.clear()
-    yield
-    clear_expenses() # or _expenses.clear()
+    clear_expenses()  # or _expenses.clear()
+    yield  # teardown = clean and reset the resources and configurations created using Setup
+    clear_expenses()  # or _expenses.clear()
 
 
 def test_get_valid_total_expenses():
@@ -18,11 +18,30 @@ def test_get_valid_total_expenses():
     assert total_expenses() == 35.5
 
 
-@pytest.mark.parametrize("category_filter", ['', ' ', 'Tomato', 'None'], ids=['empty', 'spaces', 'string', None])
+# Testing Category filter
+
+@pytest.mark.parametrize('first_test,second_test,third_test',
+                         [(
+                            [
+                                (5.0, Category.GROCERIES, "apples"),
+                                (10.0, Category.GROCERIES, "bread"),
+                                (100.0, Category.RENT, "May rent"),
+                            ],
+                          ),
+                          (
+                              
+                          ),
+                          (
+                              
+                          )])
+
+@pytest.mark.parametrize("category_filter", ['', 'negative', 123, None], ids=['empty_str', 'invalid_str', 'int', 'None'])
 def test_filter_by_category(category_filter):
-    filter_by_category(category_filter)
+    with pytest.raises(TypeError):
+        filter_by_category(category_filter)
 
 
+# Testing Clear function
 def invalid_clear_expenses():
     _expenses.clear()
     # somehow test what we get when calling the clear function
