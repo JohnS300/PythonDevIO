@@ -20,23 +20,52 @@ def test_get_valid_total_expenses():
 
 # Testing Category filter
 
-@pytest.mark.parametrize('first_test,second_test,third_test',
+@pytest.mark.parametrize('expense_list, filter_category, expected_count',
                          [(
                             [
-                                (5.0, Category.GROCERIES, "apples"),
-                                (10.0, Category.GROCERIES, "bread"),
-                                (100.0, Category.RENT, "May rent"),
+                                # First scenario: “two groceries, one rent”
+                                (5.0, date(2025, 5, 1), Category.GROCERIES, "apples"),
+                                (10.0, date(2025, 5, 1), Category.GROCERIES, "bread"),
+                                (100.0, date(2025, 5, 1), Category.RENT, "May rent"),
                             ],
+                            Category.GROCERIES,
+                            2,
                           ),
                           (
-                              
+                            [
+                                # Second scenario: “same three expenses, but filter rent”
+                                (5.0, date(2025, 5, 2), Category.GROCERIES, "apples"),
+                                (10.0, date(2025, 5, 2), Category.GROCERIES, "bread"),
+                                (100.0, date(2025, 5, 2), Category.RENT, "May rent"),
+                            ],
+                            Category.RENT,
+                            1,
                           ),
                           (
-                              
-                          )])
+                            [
+                                # Second scenario: “same three expenses, but filter rent”
+                                (5.0, date(2025, 5, 3), Category.GROCERIES, "apples"),
+                                (10.0, date(2025, 5, 3), Category.GROCERIES, "bread"),
+                                (100.0, date(2025, 5, 3), Category.RENT, "May rent"),
+                            ],
+                            Category.HOBBY,
+                            0,
+                          )], ids=['first_test', 'second_test', 'third_test'])
+def test_filter_by_valid_category(expense_list, filter_category, expected_count):
+    for vamount, vdate, vcategory, vdescription in expense_list:
+        add_expenses(vamount, vdate, vcategory, vdescription)
+
+    result = filter_by_category(filter_category)
+
+    assert isinstance(result, list)
+    assert len(result) == expected_count
+
+    for exp in result:
+        assert exp.category == filter_category
+
 
 @pytest.mark.parametrize("category_filter", ['', 'negative', 123, None], ids=['empty_str', 'invalid_str', 'int', 'None'])
-def test_filter_by_category(category_filter):
+def test_filter_by_invalid_category(category_filter):
     with pytest.raises(TypeError):
         filter_by_category(category_filter)
 
