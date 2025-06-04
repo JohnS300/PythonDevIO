@@ -70,7 +70,29 @@ def test_filter_by_invalid_category(category_filter):
         filter_by_category(category_filter)
 
 
+# Testing remove function
+@pytest.mark.parametrize('valid_test_data', [[
+    (5.0, date(2025, 6, 4), Category.HOBBY, 'Gym expenses'),
+    (4.5, date(2025, 6, 4), Category.GROCERIES, 'Food'),
+    (10.0, date(2025, 6, 4), Category.ENTERTAINMENT, 'Movie tickets')
+    ]], ids=['first_test'])
+def test_remove_expense(valid_test_data):
+    for vamount, vdate, vcategory, vdescription in valid_test_data:
+        add_expenses(vamount, vdate, vcategory, vdescription)
+    assert len(_expenses) == 3
+    original_expense_list = list(_expenses)
+    
+    remove_expense(1)
+
+    assert len(_expenses) == 2
+
+    assert _expenses[0] == original_expense_list[0]
+    assert _expenses[1] == original_expense_list[2]
+    with pytest.raises(IndexError):
+        remove_expense(5)
+
+
 # Testing Clear function
-def invalid_clear_expenses():
+def test_clear_expenses():
     _expenses.clear()
     # somehow test what we get when calling the clear function
