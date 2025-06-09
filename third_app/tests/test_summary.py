@@ -1,6 +1,6 @@
 import pytest
 from datetime import date
-from expense_tracker_v2.main import total_expenses, filter_by_category, remove_expense, clear_expenses, _expenses, add_expenses, Category
+from expense_tracker_v2.main import total_expenses, filter_by_category, remove_expense, clear_expenses, _expenses, add_expenses, Category, list_expenses
 
 
 @pytest.fixture(autouse=True)
@@ -81,7 +81,6 @@ def test_remove_expense(valid_test_data):
         add_expenses(vamount, vdate, vcategory, vdescription)
     assert len(_expenses) == 3
     original_expense_list = list(_expenses)
-    
     remove_expense(1)
 
     assert len(_expenses) == 2
@@ -93,6 +92,21 @@ def test_remove_expense(valid_test_data):
 
 
 # Testing Clear function
-def test_clear_expenses():
-    _expenses.clear()
-    # somehow test what we get when calling the clear function
+@pytest.mark.parametrize('valid_test_data', [
+    [
+        (5.0, date(2025, 6, 4), Category.HOBBY, 'Gym expenses'),
+        (4.5, date(2025, 6, 4), Category.GROCERIES, 'Food')
+    ]
+    ], ids=['two_exp'])
+def test_clear_expenses(valid_test_data):
+    for vamount, vdate, vcategory, vdescription in valid_test_data:
+        add_expenses(vamount, vdate, vcategory, vdescription)
+    assert len(_expenses) == 2
+
+    clear_expenses()
+
+    assert len(_expenses) == 0
+    assert list_expenses() == []
+    assert total_expenses() == 0.0
+    clear_expenses()
+    assert len(_expenses) == 0
