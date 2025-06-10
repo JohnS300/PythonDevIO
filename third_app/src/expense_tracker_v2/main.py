@@ -8,6 +8,7 @@ _expenses = []
 
 
 class Category(Enum):
+    """Fixed set of categories for every expense."""
     INVESTMENT = 'investment'
     HOBBY = 'hobby'
     GIRLFRIEND = 'girlfriend'
@@ -20,13 +21,46 @@ class Category(Enum):
 
 @dataclass
 class Expense:
+    """
+    Immutable record of a single out-going amount.
+
+    Attributes
+    ----------
+    amount : float
+        Positive monetary value.
+    date_of_expense : datetime.date
+        Calendar day the expense occurred.
+    category : Category
+        One of the predefined Category enum members.
+    description : str
+        Short, free-form explanation (no leading/trailing spaces).
+    """
     amount: float
     date_of_expense: date
     category: Category
     description: str
 
+    def __repr__(self) -> str:
+        # Override the auto-repr for a cleaner, one-liner
+        return (
+            f"<Expense {self.amount:.2f} "
+            f"{self.category.name} "
+            f"{self.date_of_expense.isoformat()} "
+            f"'{self.description}'>"
+        )
+
 
 def add_expense(amount, date_of_expense, category, description):
+    """
+    Record one new expense after validating all inputs.
+
+    Raises
+    ------
+    ValueError
+        If amount ≤ 0 or description is blank.
+    TypeError
+        If date_of_expense is not datetime.date or category is not Category.
+    """
     if not isinstance((amount), (int, float)) or (amount <= 0):
         raise ValueError(f"Amount must be positive number, got {amount!r}")
     if not (isinstance(date_of_expense, date)):
@@ -40,11 +74,13 @@ def add_expense(amount, date_of_expense, category, description):
 
 
 def list_expenses():
+    """Return **a shallow copy** of all currently stored expenses."""
     return list(_expenses)
     # return a shallow copy of the list so caller can’t mutate it
 
 
 def total_expenses():
+    """Return the sum of every stored expense amount."""
     total = 0.0
     for i in _expenses:
         total = total + i.amount
@@ -52,6 +88,7 @@ def total_expenses():
 
 
 def filter_by_category(category):
+    """Return only expenses whose '.category' matches *category*."""
     if not isinstance(category, Category):
         raise TypeError(f"category must be Category, got {type(category).__name__}")
     _filtered_expenses = []
@@ -62,8 +99,17 @@ def filter_by_category(category):
 
 
 def remove_expense(index):
+    """
+    Delete the expense at *index* from the internal list.
+
+    Raises
+    ------
+    IndexError
+        If index is out of range **or** list is empty.
+    """
     _expenses.pop(index)
 
 
 def clear_expenses():
+    """Remove every stored expense (idempotent)."""
     _expenses.clear()
