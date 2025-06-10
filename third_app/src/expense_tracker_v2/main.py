@@ -26,7 +26,7 @@ class Expense:
     description: str
 
 
-def add_expenses(amount, date_of_expense, category, description):
+def add_expense(amount, date_of_expense, category, description):
     if not isinstance((amount), (int, float)) or (amount <= 0):
         raise ValueError(f"Amount must be positive number, got {amount!r}")
     if not (isinstance(date_of_expense, date)):
@@ -45,10 +45,10 @@ def list_expenses():
 
 
 def total_expenses():
-    sum = 0.0
+    total = 0.0
     for i in _expenses:
-        sum = sum + i.amount
-    return sum
+        total = total + i.amount
+    return total
 
 
 def filter_by_category(category):

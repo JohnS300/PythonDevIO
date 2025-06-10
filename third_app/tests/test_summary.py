@@ -1,6 +1,6 @@
 import pytest
 from datetime import date
-from expense_tracker_v2.main import total_expenses, filter_by_category, remove_expense, clear_expenses, _expenses, add_expenses, Category, list_expenses
+from expense_tracker_v2.main import total_expenses, filter_by_category, remove_expense, clear_expenses, _expenses, add_expense, Category, list_expenses
 
 
 @pytest.fixture(autouse=True)
@@ -11,9 +11,9 @@ def setup_function():
 
 
 def test_get_valid_total_expenses():
-    add_expenses(10, date(2025, 5, 25), Category.GIRLFRIEND, 'Coffe')
-    add_expenses(20.5, date(2025, 5, 25), Category.GIRLFRIEND, 'Brunch')
-    add_expenses(5, date(2025, 5, 25), Category.GIRLFRIEND, 'Kiosk')
+    add_expense(10, date(2025, 5, 25), Category.GIRLFRIEND, 'Coffe')
+    add_expense(20.5, date(2025, 5, 25), Category.GIRLFRIEND, 'Brunch')
+    add_expense(5, date(2025, 5, 25), Category.GIRLFRIEND, 'Kiosk')
     assert len(_expenses) == 3
     assert total_expenses() == 35.5
 
@@ -53,7 +53,7 @@ def test_get_valid_total_expenses():
                           )], ids=['first_test', 'second_test', 'third_test'])
 def test_filter_by_valid_category(expense_list, filter_category, expected_count):
     for vamount, vdate, vcategory, vdescription in expense_list:
-        add_expenses(vamount, vdate, vcategory, vdescription)
+        add_expense(vamount, vdate, vcategory, vdescription)
 
     result = filter_by_category(filter_category)
 
@@ -78,7 +78,7 @@ def test_filter_by_invalid_category(category_filter):
     ]], ids=['first_test'])
 def test_remove_expense(valid_test_data):
     for vamount, vdate, vcategory, vdescription in valid_test_data:
-        add_expenses(vamount, vdate, vcategory, vdescription)
+        add_expense(vamount, vdate, vcategory, vdescription)
     assert len(_expenses) == 3
     original_expense_list = list(_expenses)
     remove_expense(1)
@@ -100,7 +100,7 @@ def test_remove_expense(valid_test_data):
     ], ids=['two_exp'])
 def test_clear_expenses(valid_test_data):
     for vamount, vdate, vcategory, vdescription in valid_test_data:
-        add_expenses(vamount, vdate, vcategory, vdescription)
+        add_expense(vamount, vdate, vcategory, vdescription)
     assert len(_expenses) == 2
 
     clear_expenses()
