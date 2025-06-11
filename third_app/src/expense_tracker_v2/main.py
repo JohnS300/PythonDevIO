@@ -73,13 +73,13 @@ def add_expense(amount, date_of_expense, category, description):
     _expenses.append(expense)
 
 
-def list_expenses():
+def list_expenses() -> list:
     """Return **a shallow copy** of all currently stored expenses."""
     return list(_expenses)
     # return a shallow copy of the list so caller can’t mutate it
 
 
-def total_expenses():
+def total_expenses() -> float:
     """Return the sum of every stored expense amount."""
     total = 0.0
     for i in _expenses:
@@ -87,7 +87,7 @@ def total_expenses():
     return total
 
 
-def filter_by_category(category):
+def filter_by_category(category) -> list:
     """Return only expenses whose '.category' matches *category*."""
     if not isinstance(category, Category):
         raise TypeError(f"category must be Category, got {type(category).__name__}")
@@ -113,3 +113,28 @@ def remove_expense(index):
 def clear_expenses():
     """Remove every stored expense (idempotent)."""
     _expenses.clear()
+
+
+def filter_by_date(start: date, end: date) -> list:
+    """
+    Return expenses whose date_of_expense is between start and end (inclusive).
+    """
+    if start > end:
+        raise ValueError("Start date must be before or on the end date")
+    _filtered_expenses = []
+    for i in _expenses:
+        if i.date_of_expense >= start and i.date_of_expense <= end:
+            _filtered_expenses.append(i)
+    return _filtered_expenses
+
+
+def to_csv() -> str:
+    """
+    Return all expenses as a CSV string with header line.
+    Columns: amount,date,category,description
+    """
+    _expenses_csv = ["amount,date,category,description"]
+    for i in _expenses:
+        newLine = f"{i.amount},{i.date_of_expense},{i.category},'{i.description}'"
+        _expenses_csv.append(newLine)
+    return "\n".join(_expenses_csv)
