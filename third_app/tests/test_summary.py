@@ -151,4 +151,3 @@ def test_to_csv(three_expenses):
     assert csv_output[0] == "amount,date,category,description"
     assert len(csv_output) == 4
     assert any('Movie' in line for line in csv_output[1:])
-
