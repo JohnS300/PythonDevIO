@@ -1,6 +1,9 @@
 import pytest
 from datetime import date
-from expense_tracker_v2.main import total_expenses, filter_by_category, remove_expense, clear_expenses, _expenses, add_expense, Category, list_expenses
+from expense_tracker_v2.main import (total_expenses, filter_by_category,
+                                     remove_expense, clear_expenses,
+                                     _expenses, add_expense, Category,
+                                     list_expenses, filter_by_date, to_csv)
 
 
 @pytest.fixture(autouse=True)
@@ -110,3 +113,42 @@ def test_clear_expenses(valid_test_data):
     assert total_expenses() == 0.0
     clear_expenses()
     assert len(_expenses) == 0
+
+
+@pytest.mark.parametrize('three_expenses',[
+    [
+        (5.0, date(2025, 6, 4), Category.HOBBY, 'Gym expenses'),
+        (4.5, date(2025, 6, 20), Category.GROCERIES, 'Food'),
+        (10.0, date(2025, 6, 28), Category.ENTERTAINMENT, 'Movie tickets')
+    ]
+], ids=['filter_by_date'])
+def test_filter_by_date(three_expenses):
+    for vamount, vdate, vcategory, vdescription in three_expenses:
+        add_expense(vamount, vdate, vcategory, vdescription)
+    assert len(_expenses) == 3
+    result = filter_by_date(date(2025, 6, 4), date(2025, 6, 20))
+    assert isinstance(result, list)
+    assert len(result) == 2
+
+    with pytest.raises(ValueError):
+        filter_by_date(date(2025, 6, 21), date(2025, 6, 20))
+
+
+@pytest.mark.parametrize('three_expenses',[
+    [
+        (5.0, date(2025, 6, 4), Category.HOBBY, 'Gym expenses'),
+        (4.5, date(2025, 6, 20), Category.GROCERIES, 'Food'),
+        (10.0, date(2025, 6, 28), Category.ENTERTAINMENT, 'Movie tickets')
+    ]
+], ids=['to_csv'])
+def test_to_csv(three_expenses):
+    for vamount, vdate, vcategory, vdescription in three_expenses:
+        add_expense(vamount, vdate, vcategory, vdescription)
+    assert len(_expenses) == 3
+
+    csv_output = to_csv().splitlines()
+
+    assert csv_output[0] == "amount,date,category,description"
+    assert len(csv_output) == 4
+    assert any('Movie' in line for line in csv_output[1:])
+
