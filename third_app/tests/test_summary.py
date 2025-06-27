@@ -115,7 +115,7 @@ def test_clear_expenses(valid_test_data):
     assert len(_expenses) == 0
 
 
-@pytest.mark.parametrize('three_expenses',[
+@pytest.mark.parametrize('three_expenses', [
     [
         (5.0, date(2025, 6, 4), Category.HOBBY, 'Gym expenses'),
         (4.5, date(2025, 6, 20), Category.GROCERIES, 'Food'),
@@ -134,7 +134,7 @@ def test_filter_by_date(three_expenses):
         filter_by_date(date(2025, 6, 21), date(2025, 6, 20))
 
 
-@pytest.mark.parametrize('three_expenses',[
+@pytest.mark.parametrize('three_expenses', [
     [
         (5.0, date(2025, 6, 4), Category.HOBBY, 'Gym expenses'),
         (4.5, date(2025, 6, 20), Category.GROCERIES, 'Food'),
