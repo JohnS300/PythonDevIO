@@ -8,6 +8,14 @@ _expenses = []
 # module-level list to hold all Expense objects
 
 
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+# Abs path to the folder containing *this* file
+
+
+_PROJECT_ROOT = os.path.abspath(os.path.join(_THIS_DIR, os.pardir, os.pardir))
+# Repo root
+
+
 class Category(Enum):
     """Fixed set of categories for every expense."""
     INVESTMENT = 'investment'
