@@ -16,6 +16,11 @@ _PROJECT_ROOT = os.path.abspath(os.path.join(_THIS_DIR, os.pardir, os.pardir))
 # Repo root
 
 
+DATA_DIR = os.path.join(_PROJECT_ROOT, 'data')
+DATA_FILE = os.path.join(DATA_DIR, 'expenses.json')
+ARCHIVE_FMT = "expense-{:%Y-%m-%d}_backup.json"
+
+
 class Category(Enum):
     """Fixed set of categories for every expense."""
     INVESTMENT = 'investment'
