@@ -63,6 +63,14 @@ class Expense:
             f"'{self.description}'>"
         )
 
+    def to_dict(self) -> dict:
+        return {
+            'amount': self.amount,
+            'date': self.date_of_expense.isoformat,
+            'category': self.category,
+            'description': self.description
+        }
+
 
 def add_expense(amount, date_of_expense, category, description):
     """
