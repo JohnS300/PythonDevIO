@@ -70,6 +70,11 @@ class Expense:
             'category': self.category,
             'description': self.description
         }
+    
+    def from_dict(cls, d):
+        return cls{
+            amount = ''
+        }
 
 
 def add_expense(amount, date_of_expense, category, description):
