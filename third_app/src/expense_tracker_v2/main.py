@@ -70,11 +70,15 @@ class Expense:
             'category': self.category,
             'description': self.description
         }
-    
-    def from_dict(cls, d):
-        return cls{
-            amount = ''
-        }
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "Expense":
+        return cls(
+            amount=d["amount"],
+            date_of_expense=date.fromisoformat(d["date"]),
+            category=Category[d["category"]],
+            description=d["description"],
+        )
 
 
 def add_expense(amount, date_of_expense, category, description):
