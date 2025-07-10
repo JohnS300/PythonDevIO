@@ -71,6 +71,10 @@ class Expense:
             'description': self.description
         }
 
+    def _save(self):
+        if not (os.access(DATA_DIR, os.F_OK)):
+            os.mkdir(DATA_DIR)
+
     @classmethod
     def from_dict(cls, d: dict) -> "Expense":
         return cls(
