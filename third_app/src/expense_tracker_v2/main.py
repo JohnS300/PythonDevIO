@@ -166,7 +166,7 @@ def filter_by_date(start: date, end: date) -> list:
 def to_csv() -> str:
     """
     Return all expenses as a CSV string with header line.
-    Columns: amount,date,category,description
+    Columns: amount,date ,category,description
     """
     _expenses_csv = ["amount,date,category,description"]
     for i in _expenses:
