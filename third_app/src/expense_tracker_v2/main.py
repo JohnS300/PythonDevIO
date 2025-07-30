@@ -1,4 +1,5 @@
 import os
+import shutil
 from enum import Enum
 from dataclasses import dataclass
 from datetime import date
@@ -18,7 +19,8 @@ _PROJECT_ROOT = os.path.abspath(os.path.join(_THIS_DIR, os.pardir, os.pardir))
 
 DATA_DIR = os.path.join(_PROJECT_ROOT, 'data')
 DATA_FILE = os.path.join(DATA_DIR, 'expenses.json')
-ARCHIVE_FMT = "expense-{:%Y-%m-%d}_backup.json"
+ARCHIVE_DIR = os.path.join(_PROJECT_ROOT, 'data', 'archive')
+ARCHIVE_FILE = os.path.join(ARCHIVE_DIR, "expense-{:%Y-%m-%d}_backup.json")
 
 
 class Category(Enum):
@@ -74,6 +76,8 @@ class Expense:
     def _save(self):
         if not (os.access(DATA_DIR, os.F_OK)):
             os.mkdir(DATA_DIR)
+        TEMP_DATA_FILE = os.path.join(DATA_FILE, '.tmp')
+        shutil.move(DATA_DIR)
 
     @classmethod
     def from_dict(cls, d: dict) -> "Expense":
