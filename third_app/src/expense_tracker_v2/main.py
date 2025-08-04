@@ -1,4 +1,5 @@
 import os
+import json
 import shutil
 from enum import Enum
 from dataclasses import dataclass
@@ -68,16 +69,10 @@ class Expense:
     def to_dict(self) -> dict:
         return {
             'amount': self.amount,
-            'date': self.date_of_expense.isoformat,
-            'category': self.category,
+            'date': self.date_of_expense.isoformat(),
+            'category': self.category.name,
             'description': self.description
         }
-
-    def _save(self):
-        if not (os.access(DATA_DIR, os.F_OK)):
-            os.mkdir(DATA_DIR)
-        TEMP_DATA_FILE = os.path.join(DATA_FILE, '.tmp')
-        shutil.move(DATA_DIR)
 
     @classmethod
     def from_dict(cls, d: dict) -> "Expense":
@@ -87,6 +82,23 @@ class Expense:
             category=Category[d["category"]],
             description=d["description"],
         )
+
+
+def _save() -> None:
+    """
+    Atomically write the current _expenses list out to DATA_FILE as JSON.
+    """
+    # 1) Ensure the data directory exists
+    os.makedirs(DATA_DIR, exist_ok=True)
+
+    # 2) Serialize to a temp file
+    tmp_path = DATA_FILE + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        # Build a list of dicts and dump as pretty JSON
+        json.dump([e.to_dict() for e in _expenses], f, indent=2)
+
+    # 3) Atomically replace the real data file
+    os.replace(tmp_path, DATA_FILE)
 
 
 def add_expense(amount, date_of_expense, category, description):
